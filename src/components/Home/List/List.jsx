@@ -8,17 +8,16 @@ const List = () => {
     const { getDataAPI, getOneContact, contacts, getData } =
         useContext(contactContext);
     const [modalState, setModalState] = useState(false);
+
     useEffect(() => {
-        if (!localStorage.getItem("contacts")) {
-            getDataAPI();
-        }
+        getDataAPI();
         getData();
     }, []);
 
     return (
         <>
             <div className="list">
-                {contacts &&
+                {contacts ? (
                     contacts.map((item) => (
                         <div
                             className="card"
@@ -36,7 +35,10 @@ const List = () => {
                                 <h4>{item.email}</h4>
                             </div>
                         </div>
-                    ))}
+                    ))
+                ) : (
+                    <h1 className="notFound">здесь пока нечего нет</h1>
+                )}
             </div>
             {modalState && <ListModal setModalState={setModalState} />}
         </>

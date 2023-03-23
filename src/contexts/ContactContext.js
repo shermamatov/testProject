@@ -1,4 +1,6 @@
 import React, { createContext, useState } from "react";
+import axios from "axios";
+
 export const contactContext = createContext();
 const ContactContext = ({ children }) => {
     const [contacts, setContacts] = useState([]);
@@ -17,14 +19,21 @@ const ContactContext = ({ children }) => {
         }
     }
     async function getDataAPI() {
-        let products = await fetch(API)
-            .then((res) => res.json())
-            .catch((err) => console.log(err));
         if (!localStorage.getItem("contacts")) {
-            localStorage.setItem("contacts", JSON.stringify(products));
+            // ! FETCH
+            // let products = await fetch(API)
+            //     .then((res) => res.json())
+            //     .catch((err) => {
+            //         console.log(err);
+            //         console.log("errrorr");
+            //     });
+            // ! AXIOS
+            let { data } = await axios(API);
+            localStorage.setItem("contacts", JSON.stringify(data));
+            getData();
         }
     }
-    function getData() {
+    async function getData() {
         if (localStorage.getItem("contacts")) {
             let data = JSON.parse(localStorage.getItem("contacts"));
             let a = data.sort((a, b) => {
@@ -38,7 +47,7 @@ const ContactContext = ({ children }) => {
             });
             setContacts(a);
         } else {
-            getDataAPI();
+            await getDataAPI();
             getData();
         }
     }

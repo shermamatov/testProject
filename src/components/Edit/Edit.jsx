@@ -15,9 +15,11 @@ const Edit = () => {
         oneContact && oneContact.address.street
     );
     const navigate = useNavigate();
+
     useEffect(() => {
         getOneContact(id);
     }, []);
+
     function handleEdit() {
         let obj = {
             id,
